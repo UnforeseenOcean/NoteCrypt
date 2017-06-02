@@ -1,0 +1,12 @@
+; Encrypt
+; Generate list of numbers to use in the list for encryption key, which is a substitution key
+Generate list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16) = TotalKeyLength -> linenum(key.lst);
+
+; Generate keys for each line
+for each line(key.lst) Scramble("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567899!@#$%^&*()_+{}[];':".,/<>?~`") -> offset(linenum(key.lst))
+
+; Swap each character by looking it up in the line number on the first character for each line specified (if the line starts with 1, it uses first line of the key)
+For each char(line) add char(rand(linenum,"key.lst")) then swap("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567899!@#$%^&*()_+{}[];':".,/<>?~`") with char(line(currentfile.char(1))("Key.lst"));
+
+; Push the result to new file
+WriteToFile(result%stdin%.txt);
